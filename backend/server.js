@@ -5,50 +5,72 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middlewares
+// ================================
+// MIDDLEWARES
+// ================================
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Importar rutas (SOLO authRoutes existe por ahora)
+// ================================
+// IMPORTAR RUTAS
+// ================================
+
 const authRoutes = require('./routes/auth.routes');
 const vehiculoRoutes = require('./routes/vehiculo.routes');
-const choferRoutes = require('./routes/chofer.routes');     
-const rutaRoutes = require('./routes/ruta.routes');        
-const viajeRoutes = require('./routes/viaje.routes');      
-const mantenimientoRoutes = require('./routes/mantenimiento.routes'); 
-const dashboardRoutes = require('./routes/dashboard.routes'); 
-const alertaRoutes = require('./routes/alerta.routes');    
+const choferRoutes = require('./routes/chofer.routes');
+const rutaRoutes = require('./routes/ruta.routes');
+const viajeRoutes = require('./routes/viaje.routes');
+const mantenimientoRoutes = require('./routes/mantenimiento.routes');
+const dashboardRoutes = require('./routes/dashboard.routes');
+const alertaRoutes = require('./routes/alerta.routes');
+const reportesRoutes = require("./routes/reporte.routes");
+app.use("/api/reportes", reportesRoutes);
 
-// Usar rutas (SOLO authRoutes por ahora)
+// ⭐ NUEVO MÓDULO DE REPORTES
+const reporteRoutes = require('./routes/reporte.routes');
+
+// ================================
+// USAR RUTAS
+// ================================
+
 app.use('/api/auth', authRoutes);
 app.use('/api/vehiculos', vehiculoRoutes);
-app.use('/api/choferes', choferRoutes);       
-app.use('/api/rutas', rutaRoutes);            
-app.use('/api/viajes', viajeRoutes);          
-app.use('/api/mantenimientos', mantenimientoRoutes); 
-app.use('/api/dashboard', dashboardRoutes);   
-app.use('/api/alertas', alertaRoutes);        
+app.use('/api/choferes', choferRoutes);
+app.use('/api/rutas', rutaRoutes);
+app.use('/api/viajes', viajeRoutes);
+app.use('/api/mantenimientos', mantenimientoRoutes);
+app.use('/api/dashboard', dashboardRoutes);
+app.use('/api/alertas', alertaRoutes);
 
-// Ruta de prueba
+// ⭐ Ruta de reportes (AVANZADO)
+app.use('/api/reportes', reporteRoutes);
+
+// ================================
+// RUTA DE PRUEBA
+// ================================
 app.get('/', (req, res) => {
-  res.json({ 
+  res.json({
     message: '🚛 API Sistema de Logística funcionando!',
     version: '1.0.0',
     timestamp: new Date()
   });
 });
 
-// Manejo de errores
+// ================================
+// MANEJO GLOBAL DE ERRORES
+// ================================
 app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ 
+  console.error('❌ ERROR EN SERVIDOR:', err.stack);
+  res.status(500).json({
     error: 'Error en el servidor',
-    message: err.message 
+    message: err.message
   });
 });
 
-// Iniciar servidor
+// ================================
+// INICIAR SERVIDOR
+// ================================
 app.listen(PORT, () => {
   console.log('=================================');
   console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);

@@ -94,19 +94,18 @@ export const viajesAPI = {
   cancelar: (id, data) => api.patch(`/viajes/${id}/cancelar`, data)
 };
 
-// ============================================
+// ----------------------------
 // MANTENIMIENTOS
-// ============================================
+// ----------------------------
 export const mantenimientosAPI = {
-  getAll: (params) => api.get('/mantenimientos', { params }),
+  getAll: () => api.get("/mantenimientos"),
   getById: (id) => api.get(`/mantenimientos/${id}`),
-  getByVehiculo: (idVehiculo) => api.get(`/mantenimientos/vehiculo/${idVehiculo}`),
-  getEstadisticas: () => api.get('/mantenimientos/estadisticas/general'),
-  create: (data) => api.post('/mantenimientos', data),
-  completar: (id, data) => api.patch(`/mantenimientos/${id}/completar`, data),
+  create: (data) => api.post("/mantenimientos", data),
   update: (id, data) => api.put(`/mantenimientos/${id}`, data),
-  delete: (id) => api.delete(`/mantenimientos/${id}`)
+  delete: (id) => api.delete(`/mantenimientos/${id}`),
 };
+
+
 
 // ============================================
 // DASHBOARD
@@ -136,5 +135,21 @@ export const alertasAPI = {
   resolverPorRelacion: (tipo, id) => api.patch(`/alertas/resolver-por-relacion/${tipo}/${id}`),
   delete: (id) => api.delete(`/alertas/${id}`)
 };
+
+
+// ============================================
+// REPORTES (MÓDULO AVANZADO)
+// ============================================
+export const reportesAPI = {
+  getKPIs: (params) => api.get("/reportes/kpis", { params }),
+  getViajesPorDia: (params) => api.get("/reportes/viajes-por-dia", { params }),
+  getRutasMasUsadas: (params) => api.get("/reportes/rutas-mas-usadas", { params }),
+  getChoferesProductivos: (params) => api.get("/reportes/choferes-productivos", { params }),
+  getMantenimientoPorMes: () => api.get("/reportes/mantenimiento-por-mes"),
+  getAlertasPrioridad: () => api.get("/reportes/alertas-prioridad"),
+  getDatosExportacion: () => api.get("/reportes/datos-exportacion"),
+};
+
+
 
 export default api;
